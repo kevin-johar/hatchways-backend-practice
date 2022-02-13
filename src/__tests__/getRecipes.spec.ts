@@ -1,5 +1,5 @@
 describe("Get Recipes", () => {
-  it('Should return all recipes', () => {
-    
+  it('Return all recipes', () => {
+    expect(true).toBe(true);
   });
 });
