@@ -1,7 +1,7 @@
 import fs from "fs";
 
 export const fileToJSON = (path: string) => {
-  let rawData = fs.readFileSync('data.json');
+  let rawData = fs.readFileSync(path);
   return JSON.parse(rawData.toString());
 };
 
