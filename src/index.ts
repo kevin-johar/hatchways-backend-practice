@@ -13,9 +13,9 @@ app.get("/recipes", (req, res, next) => {
   let data: FileData =  fileToJSON("data.json");
   let recipeNames: string[] = data.recipes.map((recipe) => recipe.name);
 
-  res.send({
+  res.status(200).send({
     recipeNames
-  }, 200);
+  });
 });
 
 app.get("/recipes/details/:recipe", (req, res, next) => {
@@ -40,12 +40,12 @@ app.post("/recipes", (req, res, next) => {
     recipe.name === newRecipe.name) === -1) {
     rawData.recipes.push(req.body);
     JSONtoFile(rawData, "data.json");
-    res.send(201);
+    res.status(201);
     console.log("Working");
   } else {
-    res.send({
+    res.status(400).send({
       error: "Recipe already exists"
-    }, 400);
+    });
   }
 });
 
@@ -55,14 +55,14 @@ app.put("/recipes", (req, res, next) => {
 
   const toUpdate = rawData.recipes.findIndex((recipe) => recipe.name === updatedRecipe.name);
   if(toUpdate === -1) {
-    res.send({
+    res.status(404).send({
       error: "Recipe does not exist"
-    }, 404);
+    });
   }
   rawData.recipes[toUpdate] = updatedRecipe;
   JSONtoFile(rawData, "data.json");
 
-  res.send(204);
+  res.status(204);
 });
 
 app.listen(port, () => {
