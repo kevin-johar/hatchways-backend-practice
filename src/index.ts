@@ -1,13 +1,21 @@
 import express from "express";
 import bodyParser from 'body-parser';
-import { fileToJSON, JSONtoFile } from "./utilities";
-const port = 3000;
-const app = express();
 import { FileData, Recipe } from "./types"
+import { fileToJSON, JSONtoFile } from './utilities';
+
+let path = "data.json";
+const app = express();
 
 // Needed for parsing JSON data in POST requests
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
+
+app.use((req, res, next) => {
+  if (process.env.NODE_ENV === "test") {
+    path = "src/__tests__/resources/test-data.json";
+  }
+  next();
+});
 
 app.get("/recipes", (req, res, next) => {
   let data: FileData =  fileToJSON("data.json");
@@ -65,6 +73,4 @@ app.put("/recipes", (req, res, next) => {
   res.status(204);
 });
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
+export default app;
